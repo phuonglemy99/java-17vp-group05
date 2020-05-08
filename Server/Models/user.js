@@ -11,6 +11,13 @@ let UserSchema = new Schema({
     money: Number    
 });
 
+let HistorySchema = new Schema({
+    time: String,
+    enemy: String,
+    status: String    
+});
+
 let User = mongoose.model("User", UserSchema, "users");
+let History = mongoose.model("User", HistorySchema, "users");
 
 module.exports = User;

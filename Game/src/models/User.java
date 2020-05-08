@@ -3,62 +3,84 @@ package models;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    @SerializedName("albumId")
-    private Integer albumId;
-    @SerializedName("id")
-    private Integer id;
-    @SerializedName("title")
-    private String title;
-    @SerializedName("url")
-    private String url;
-    @SerializedName("thumbnailUrl")
-    private String thumbnailUrl;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("username")
+    private String username;
+    @SerializedName("password")
+    private String password;
+    @SerializedName("history")
+    private String history;
+    @SerializedName("win");
+    private Integer win;
+    @SerializedName("lose");
+    private Integer lose;
+    @SerializedName("money");
+    private Integer money;
 
-    public User(Integer albumId, Integer id, String title, String url, String thumbnailUrl) {
-        this.albumId = albumId;
-        this.id = id;
-        this.title = title;
-        this.url = url;
-        this.thumbnailUrl = thumbnailUrl;
+    public User(String name, String username, String password, String history, Integer win, Integer lose, Integer money) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.history = history;
+        this.win = win;
+        this.lose = lose;
+        this.money = money;
     }
 
-    public Integer getAlbumId() {
-        return albumId;
+    public String getName() {
+        return name;
     }
 
-    public void setAlbumId(Integer albumId) {
-        this.albumId = albumId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getTitle() {
-        return title;
+    public String getPassword() {
+        return password;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getUrl() {
-        return url;
+    public String getHistory() {
+        return history;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setHistory(String history) {
+        this.history = history;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public Integer getWin() {
+        return win;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setWin(Integer win) {
+        this.win = win;
+    }
+
+    public Integer getLose() {
+        return lose;
+    }
+
+    public void setLose(Integer lose) {
+        this.lose = lose;
+    }
+
+    public Integer getMoney() {
+        return money;
+    }
+
+    public void setMoney(Integer money) {
+        this.money = money;
     }
 }
