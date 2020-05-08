@@ -12,7 +12,7 @@ let UserSchema = new Schema({
 });
 
 let HistorySchema = new Schema({
-    time: String,
+    time: Date,
     enemy: String,
     status: String    
 });
