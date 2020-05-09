@@ -38,9 +38,10 @@ module.exports.addHistory = function(req, res) {
     });
 }
 
-
 module.exports.create = function(req, res) {
-    let {name, username, password} = req.body;
+
+    let {name, username, password} = req.body; 
+
     let NewUser = new User({
         name,
         username,
@@ -49,6 +50,8 @@ module.exports.create = function(req, res) {
         lose: 0,
         money: 0
     });
+
+    // Save to MongoDB
     NewUser.save(function (err, newUser) {
         if (err)
             return res.json({status: 0});

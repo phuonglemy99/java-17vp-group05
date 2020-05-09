@@ -42,3 +42,7 @@ const play_match = io.of('/play-match')
 app.get('/', function(req, res){
     res.sendFile(__dirname + '\\Static\\index.html');
 })
+
+app.get('/play-match', function(req, res){
+    res.sendFile(__dirname + '\\Static\\index_playmatch.html');
+})
