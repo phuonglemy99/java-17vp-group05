@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
 let HistorySchema = new Schema({
     time: Date,
     enemy: String,
-    status: String,
+    status: Boolean,
     userID: String    
 });
 
