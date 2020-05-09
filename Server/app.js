@@ -15,6 +15,7 @@ var randomstring = require("randomstring");
 
 // define routes 
 const userRoute = require('./Routes/user.route');
+const authRoute = require('./Routes/auth.route');
 
 // Mongoose
 const mongoose = require("mongoose");
@@ -29,7 +30,7 @@ app.get('/play-match', function(req, res){
 
 // Using route in Express
 app.use('/users', userRoute);
-
+app.use('/auth', authRoute);
 
 // start server 
 http.listen(3000, function(){
