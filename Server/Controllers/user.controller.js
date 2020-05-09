@@ -7,5 +7,25 @@ module.exports.getAllInfo = function(req, res) {
     User.findById(userID, '-password -_id').exec( function(err, adventure){
         console.log(adventure);
     })
-    return res.send("hello world");
+}
+
+module.exports.create = function(req, res) {
+
+    let {name, username, password} = req.body;
+
+    let NewUser = new User({
+        name,
+        username,
+        password,
+        win: 0,
+        lose: 0,
+        money: 0
+    });
+
+    NewUser.save(function (err, newUser) {
+        if (err)
+            res.json({status: 0});
+        res.json({status: 1});
+    });
+
 }

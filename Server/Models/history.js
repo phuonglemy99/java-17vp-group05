@@ -5,7 +5,8 @@ let Schema = mongoose.Schema;
 let HistorySchema = new Schema({
     time: Date,
     enemy: String,
-    status: String    
+    status: String,
+    userID: String    
 });
 
 let History = mongoose.model("History", HistorySchema, "histories");
