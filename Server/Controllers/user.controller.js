@@ -4,10 +4,10 @@ let History = require("../Models/history");
 module.exports.getAllInfo = function(req, res) {
     let userID = req.params.id;
                     // projection in mongoDB 
-    User.findById(userID, '-password').exec( function(err, user){
+    User.findById(userID, '-password -__v').exec( function(err, user){
         if(err) 
             return res.json({status: 0});
-        History.find({userID}, "-userID -_id", function(error, histories) {
+        History.find({userID}, "-userID -_id -__v", function(error, histories) {
             if (error)
                 return res.json({status: 0});
             if (!histories)
@@ -26,6 +26,18 @@ module.exports.updateInfo = function(req, res) {
     });
 }
 
+module.exports.addHistory = function(req, res) {
+    let userID = req.params.id;
+    
+    let newHistory = new History({ userID, ...req.body});
+    
+    newHistory.save(function(err, history){
+        if (err)
+            return res.json({status: 0});
+        return res.json({status: 1});
+    });
+}
+
 
 module.exports.create = function(req, res) {
     let {name, username, password} = req.body;
@@ -39,8 +51,8 @@ module.exports.create = function(req, res) {
     });
     NewUser.save(function (err, newUser) {
         if (err)
-            res.json({status: 0});
-        res.json({status: 1});
+            return res.json({status: 0});
+        return res.json({status: 1});
     });
 }
 
