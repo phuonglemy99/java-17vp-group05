@@ -1,8 +1,9 @@
-package ResponseResult;
+package JavaServer.ResponseResult;
 
-import com.google.gson.annotations.SerializedName;
 
 // Phan tich file JSON thanh doi tuong
+
+import com.google.gson.annotations.SerializedName;
 
 public class UserLoginResult {
     @SerializedName("status")
@@ -10,4 +11,7 @@ public class UserLoginResult {
 
     @SerializedName("userid")
     public String userid;
+
+    @SerializedName("activate")
+    public Integer activate;
 }

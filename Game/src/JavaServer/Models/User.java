@@ -1,4 +1,4 @@
-package models;
+package JavaServer.Models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -26,7 +26,11 @@ public class User {
     @SerializedName("money")
     private Integer money;
 
-    public User(String name, String username, String password, List<History> histories, Integer win, Integer lose, Integer money) {
+    @SerializedName("activate")
+    private Integer activate;
+
+    public User(String name, String username, String password, List<History> histories,
+                Integer win, Integer lose, Integer money) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -34,6 +38,21 @@ public class User {
         this.win = win;
         this.lose = lose;
         this.money = money;
+        this.activate = 1;
+    }
+
+    public void printUser(){
+        System.out.println("Name: " + name);
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("History: ");
+        for (History his : histories){
+            his.printHistory();
+        }
+        System.out.println("Win: " + win);
+        System.out.println("Lose: " + lose);
+        System.out.println("Money: " + money);
+        System.out.println("Activate: " + activate);
     }
 
     public String getName() {
@@ -90,5 +109,13 @@ public class User {
 
     public void setMoney(Integer money) {
         this.money = money;
+    }
+
+    public Integer getActivate() {
+        return activate;
+    }
+
+    public void setActivate(Integer activate) {
+        this.activate = activate;
     }
 }

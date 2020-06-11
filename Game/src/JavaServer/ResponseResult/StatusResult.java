@@ -1,4 +1,4 @@
-package ResponseResult;
+package JavaServer.ResponseResult;
 
 import com.google.gson.annotations.SerializedName;
 
