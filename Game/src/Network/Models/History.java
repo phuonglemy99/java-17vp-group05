@@ -1,8 +1,6 @@
-package JavaServer.Models;
+package Network.Models;
 
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Date;
 
 public class History {
     @SerializedName("enemy")

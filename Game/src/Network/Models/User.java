@@ -1,4 +1,4 @@
-package JavaServer.Models;
+package Network.Models;
 
 import com.google.gson.annotations.SerializedName;
 

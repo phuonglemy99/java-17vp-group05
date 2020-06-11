@@ -1,4 +1,4 @@
-package JavaServer.ResponseResult;
+package Network.ResponseResult;
 
 
 // Phan tich file JSON thanh doi tuong

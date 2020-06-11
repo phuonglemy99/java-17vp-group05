@@ -1,16 +1,15 @@
-package JavaServer;
+package Network;
 
-import JavaServer.Models.History;
-import JavaServer.Models.User;
-import JavaServer.Network.GetDataService;
-import JavaServer.Network.RetrofitClientInstance;
-import JavaServer.ResponseResult.StatusResult;
-import JavaServer.ResponseResult.UserLoginResult;
+import Network.Models.History;
+import Network.Models.User;
+import Network.Connection.GetDataService;
+import Network.Connection.RetrofitClientInstance;
+import Network.ResponseResult.StatusResult;
+import Network.ResponseResult.UserLoginResult;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.io.IOException;
-import java.util.List;
 
 public class main {
     public static void main(String[] args){

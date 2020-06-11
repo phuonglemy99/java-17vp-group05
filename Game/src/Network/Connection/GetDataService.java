@@ -1,13 +1,11 @@
-package JavaServer.Network;
+package Network.Connection;
 
-import JavaServer.Models.History;
-import JavaServer.Models.User;
-import JavaServer.ResponseResult.StatusResult;
-import JavaServer.ResponseResult.UserLoginResult;
+import Network.Models.History;
+import Network.Models.User;
+import Network.ResponseResult.StatusResult;
+import Network.ResponseResult.UserLoginResult;
 import retrofit2.Call;
 import retrofit2.http.*;
-
-import java.util.Date;
 
 public interface GetDataService {
     //Login

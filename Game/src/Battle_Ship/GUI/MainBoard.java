@@ -1,7 +1,5 @@
 package Battle_Ship.GUI;
 
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
 

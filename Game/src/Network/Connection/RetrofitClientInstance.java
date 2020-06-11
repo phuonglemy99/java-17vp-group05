@@ -1,4 +1,4 @@
-package JavaServer.Network;
+package Network.Connection;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
