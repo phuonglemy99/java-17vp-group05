@@ -62,4 +62,8 @@ public class SocketPlayer {
     public void connect(){
         socket.connect();
     }
+
+    public void emit(String event, Object... args){
+        socket.emit(event, args);
+    }
 }

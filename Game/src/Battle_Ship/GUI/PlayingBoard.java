@@ -24,14 +24,15 @@ public class PlayingBoard {
         }
     }
 
-    public PlayingBoard(BoardGUI m_boardEnemy/*, Board inforBoardP*/){
+    public PlayingBoard(BoardGUI m_boardPlayer){
         Border blackline = BorderFactory.createLineBorder(Color.black);
         Container c = jfrm.getContentPane();
         jfrm.setBounds(300, 90, 950, 700);
         jfrm.setDefaultCloseOperation(EXIT_ON_CLOSE);
         jfrm.setResizable(false);
         //setBoard("Player", inforBoardP);
-        setBoard("Enemy", m_boardEnemy);
+        setBoard("Player", m_boardPlayer);
+
         boardEnemy.setStatus(1);
 
         FlowLayout layout = new FlowLayout(FlowLayout.LEFT, 40,10);
@@ -57,13 +58,8 @@ public class PlayingBoard {
         //boardPlayer.setBorder(blackline);
         rightPanel.add(chat);
 
-
         c.add(leftPanel);
         c.add(rightPanel);
         jfrm.setVisible(true);
     }
-
-    /*public static void main(String[] args) throws Exception{
-        PlayingBoard f = new PlayingBoard();
-    }*/
 }

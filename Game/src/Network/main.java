@@ -23,7 +23,10 @@ public class main {
             UserLoginResult userLoginResult = response.body();
 
             if (userLoginResult.status == 1 && userLoginResult.activate == 1) {
+
                 System.out.println("Login Successfully");
+
+
                 Call<User> callGetInfoUser = service.getAllInfoUser(userLoginResult.userid);
                 Response<User> res = callGetInfoUser.execute();
                 //Add history

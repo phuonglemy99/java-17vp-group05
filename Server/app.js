@@ -66,7 +66,7 @@ const play_match = io.of('/play-match')
                         })
 
                         socket.on("fire", function() {
-                            
+                            console.log("Player fire");
                         })
 
                         socket.on('chat message', function(msg){

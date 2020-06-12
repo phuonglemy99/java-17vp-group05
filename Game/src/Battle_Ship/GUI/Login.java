@@ -1,6 +1,15 @@
 package Battle_Ship.GUI;
 
+import Network.ClientInstance;
+import Network.Connection.GetDataService;
+import Network.Connection.RetrofitClientInstance;
+import Network.ResponseResult.UserLoginResult;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class Login extends JFrame {
@@ -112,7 +121,9 @@ public class Login extends JFrame {
         btnSignIn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSignIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSignInActionPerformed(evt);
+                String strUserName = txtUserName.getText();
+                String strPassword = jPasswordField.getText();
+                btnSignInActionPerformed(evt, strUserName, strPassword);
             }
         });
         jPanel1.add(btnSignIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 210, -1));
@@ -160,9 +171,21 @@ public class Login extends JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbRemeberAccActionPerformed
 
-    private void btnSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignInActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSignInActionPerformed
+    private void btnSignInActionPerformed(ActionEvent evt, String strUserName, String strPassword) {
+        Call<UserLoginResult> call = ClientInstance.service.loginUser(strUserName, strPassword);
+        try {
+            Response<UserLoginResult> response = call.execute();
+            UserLoginResult userLoginResult = response.body();
+            if (userLoginResult.status == 1 && userLoginResult.activate == 1) {
+                setVisible(false);
+                DashBoard dashBoard = new DashBoard();
+                dashBoard.setVisible(true);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:
@@ -170,41 +193,6 @@ public class Login extends JFrame {
         SignUp signup = new SignUp();
         signup.setVisible(true);
 
-    }//GEN-LAST:event_btnSignUpActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
