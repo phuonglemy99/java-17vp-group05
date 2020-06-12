@@ -1,16 +1,15 @@
 package Battle_Ship.GUI;
 
 import Battle_Ship.Board.Board;
-import Battle_Ship.Board.Tile;
-import Battle_Ship.Ship.BattleShip;
 import Battle_Ship.Ship.Ship;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import static Battle_Ship.GUI.PlayingBoard.jfrm;
@@ -100,21 +99,22 @@ public class BoardGUI extends JPanel {
                         click_col = tileGUI.getColumn();
                         click_row = tileGUI.getRow();
                         if(status == 0){
-                        try{
-                            if(!isCrash("Right")) {
-                                for (int index = click_col; index < click_col + factoryShip(); index++) {
-                                    tilePanes[click_row][index].setBackground(Color.CYAN);
-                                    tilePanes[click_row][index].setTypeTile(flag);
+                            try{
+                                if(!isCrash("Right")) {
+                                    for (int index = click_col; index < click_col + factoryShip(); index++) {
+                                        tilePanes[click_row][index].setBackground(Color.CYAN);
+                                        tilePanes[click_row][index].setTypeTile(flag);
+                                    }
+                                    addShip("Right");
+                                    //board.placeShip(board.getTile(click_row, click_col), flag, Ship.direction.Right);
                                 }
-                                addShip("Right");
-                                //board.placeShip(board.getTile(click_row, click_col), flag, Ship.direction.Right);
+                            } catch (IndexOutOfBoundsException err){
+                                //err.printStackTrace();
+                                execError("Right");
                             }
-                        } catch (IndexOutOfBoundsException err){
-                            //err.printStackTrace();
-                            execError("Right");
                         }
-                    }else{
-                            System.out.println(board.getTile(click_row,click_col).getName());
+                        else{
+                            // System.out.println(board.getTile(click_row,click_col).getName());
                             if (tilePanes[click_row][click_col].getIsClicked() == 2){
                                 //JOptionPane.showMessageDialog(jfrm,  "This tile has been clicked!", "Error", JOptionPane.ERROR_MESSAGE);
                             } else {
@@ -178,13 +178,11 @@ public class BoardGUI extends JPanel {
                     board.setTilesType(indexRow, indexColumn, tilePanes[indexRow][indexColumn].getTypeTile());
                     board.getTile(indexRow, indexColumn).setName(tilePanes[indexRow][indexColumn].getTypeTile());
                 }
-                System.out.print(board.getTilesType(indexRow, indexColumn) + " ");
+                // System.out.print(board.getTilesType(indexRow, indexColumn) + " ");
             }
-
-            System.out.println();
+            // System.out.println();
         }
 
-        //TODO:
         for(ArrayList<Integer> ship : shipTiles){
             if(ship.get(2) == 1){
                 board.placeShip(board.getTile(ship.get(0), ship.get(1)), board.getTile(ship.get(0), ship.get(1)).getName(), Ship.direction.Right);
@@ -194,7 +192,6 @@ public class BoardGUI extends JPanel {
         }
         //System.out.println(ships);
     }
-
 
     public void showTypeShip(){
         for (int indexRow = 0; indexRow < 10; indexRow++){
@@ -377,6 +374,16 @@ public class BoardGUI extends JPanel {
     public void removeShip(){
         shipTiles.remove(shipTiles.size()-1);
     }
+
+    public void enableOrDisableTiles(boolean enable) {
+        for (int r = 0; r < 9; r++){
+            for(int c = 0; c < 9; c++)
+            {
+                tilePanes[r][c].setEnabled(enable);
+            }
+        }
+    }
+
     public static class TilePane extends JPanel{
         private Color defaultBackground;
         private int length;
@@ -511,13 +518,4 @@ public class BoardGUI extends JPanel {
         }
     }
 
-    //-------------------------------------------------------Play Game-----------------------------------
-
-    public static void main(String[] arg) {
-        JFrame jFrame = new JFrame();
-        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jFrame.setSize(1000, 1000);
-        jFrame.add(new BoardGUI(400, 0));
-        jFrame.setVisible(true);
-    }
 }

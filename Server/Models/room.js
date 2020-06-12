@@ -1,8 +1,17 @@
 class Room {
-    constructor(idroom, player1, player2)
+    static socket;
+
+    constructor(idroom)
     {
-        this._idRoom = idroom;
-        this._player_1 = player1;
-        this._player_2 = player2;
+        this.idRoom = idroom;
+        this.Player = [];
+    }
+
+    addPlayer(playerID){
+        this.Player.push(playerID);
+    }
+
+    numPlayer(){
+        return this.Player.length;
     }
 }

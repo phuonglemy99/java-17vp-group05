@@ -1,6 +1,5 @@
 package Battle_Ship.GUI;
 
-import Battle_Ship.Board.Board;
 import Battle_Ship.Button.Button;
 import Battle_Ship.Ship.Ship;
 
@@ -9,10 +8,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
 
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 

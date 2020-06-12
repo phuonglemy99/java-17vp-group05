@@ -1,5 +1,7 @@
 package Battle_Ship;
 
+import Battle_Ship.GUI.PlayingBoard;
+import Battle_Ship.GUI.chatGUI;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -10,20 +12,25 @@ public class SocketPlayer {
     private static String SOCKET_URL = "http://localhost:3000/play-match";
     private static SocketPlayer instance;
     private Socket socket;
+    private String socketID;
 
     private SocketPlayer() throws URISyntaxException {
         socket = IO.socket(SOCKET_URL);
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+
             @Override
             public void call(Object... args) {
                 System.out.println("Da ket noi socket thanh cong");
             }
-        }).on("chat message", new Emitter.Listener() {
+
+        }).on("info", new Emitter.Listener() {
             @Override
-            public void call(Object... args) {
-                System.out.println(args[0]);
+            public void call(Object... objects) {
+                socketID = objects[0].toString();
             }
-        }).on("enemy fire",new Emitter.Listener() {
+        }).on("chat message", new PlayingBoard.ChatEmitterListener()
+        ).on("startGame", new PlayingBoard.StartGameEmitterListener()
+        ).on("enemyFire",new Emitter.Listener() {
             @Override
             public void call(Object... objects) {
                 // TODO: Check enemy fire right or wrong place, update UI
@@ -33,7 +40,7 @@ public class SocketPlayer {
                 String result = "";
                 socket.emit("result", result);
             }
-        }).on("end_game", new Emitter.Listener(){
+        }).on("endGame", new Emitter.Listener(){
             @Override
             public void call(Object... objects) {
                 System.out.println("Ket thuc tran dau");
@@ -63,7 +70,15 @@ public class SocketPlayer {
         socket.connect();
     }
 
+    public boolean checkSocketNotNull(){
+        return socket.connected();
+    }
+
     public void emit(String event, Object... args){
         socket.emit(event, args);
+    }
+
+    public String getSocketID() {
+        return socketID;
     }
 }

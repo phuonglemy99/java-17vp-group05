@@ -1,5 +1,7 @@
 package Battle_Ship.GUI;
 
+import Battle_Ship.SocketPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,9 +25,29 @@ public class chatGUI extends JPanel{
         qScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         chat = new JTextField(20);
         JButton sendButton = new JButton("Send");
-        //sendButton.addActionListener(new SendButtonListener());
+
+        sendButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SocketPlayer.getInstance().emit("chat message", chat.getText());
+                chat.setText("");
+            }
+        });
+
         add(qScroller);
         add(chat);
         add(sendButton);
+    }
+
+    public void addText(String id, String text){
+        String oldText = conversation.getText();
+
+        String temp = "";
+        if (id.equals(SocketPlayer.getInstance().getSocketID()))
+            temp += "Me: ";
+        else
+            temp += "Enemy: ";
+        temp += text;
+        conversation.setText(oldText + temp + "\n");
     }
 }

@@ -9,6 +9,9 @@ const app = imp.application;
 // Create server 
 const http = imp.http;
 
+// Import class Room
+const Room = require("./Models/room");
+
 const io = imp.IO;
 
 // import package to generate id for room
@@ -40,43 +43,55 @@ app.get('/play-match', function(req, res){
 // Socket.IO program
 let count_connection = 0;
 let last_room = null;
+let waiting_player = null;
 
-const play_match = io.of('/play-match')
-                    .on('connect', function(socket){
-                        // distribute user finding match in room
-                        if ( count_connection % 2 === 0 )                          
-                            last_room = randomstring.generate();
-            
-                        // increase number of user finding match
-                        count_connection ++;
+const play_match = io.of('/play-match');
 
-                        // join user to room
-                        socket.join(last_room)
+Room.socket = play_match;
 
-                        console.log('user connected. \ncount_connection = ' + count_connection);
-                        console.log(`Socket ID = ${socket.id}`);
-                        console.log(`user join the room ${last_room}`);
+play_match.on('connect', function(socket){
+        // distribute user finding match in room
+        if ( count_connection % 2 === 0 )
+        {
+            last_room = randomstring.generate();
+            waiting_player = socket.id;
+        }                          
 
-                        play_match.to(last_room).emit('id_room', last_room);
-                        
-                        // cancel socket client disconnect 
-                        socket.on('disconnect', function(){
-                            count_connection -- ;
-                            console.log('user disconnected. \ncount_connection = ' + count_connection);
-                        })
+        // increase number of user finding match
+        count_connection ++;
 
-                        socket.on("fire", function() {
-                            console.log("Player fire");
-                        })
+        // join user to room
+        socket.join(last_room)
 
-                        socket.on('chat message', function(msg){
-                            for (let key in socket.rooms) { 
-                                if (! key.includes('play-match') )
-                                    play_match.to(socket.rooms[key]).emit('chat message', msg);
-                            }
-                        });                        
-                    });
+        console.log('user connected. \ncount_connection = ' + count_connection);
+        console.log(`Socket ID = ${socket.id}`);
+        console.log(`user join the room ${last_room}`);
 
+        play_match.to(socket.id).emit("info", socket.id);
+        
+        if ( count_connection % 2 === 0 ){
+            play_match.to(socket.id).emit("startGame");
+            play_match.to(waiting_player).emit("startGame");
+        }   
+
+        // cancel socket client disconnect 
+        socket.on('disconnect', function(){
+            count_connection -- ;
+            console.log('user disconnected. \ncount_connection = ' + count_connection);
+        })
+
+        socket.on("fire", function() {
+            console.log("Player fire");
+        })
+
+        socket.on('chat message', function(msg){
+            console.log(socket.rooms);
+            for (let key in socket.rooms) { 
+                if (! key.includes('play-match') )
+                    play_match.to(socket.rooms[key]).emit('chat message', socket.id, msg);
+            }
+        });                        
+    });
 
 
 // start server 
