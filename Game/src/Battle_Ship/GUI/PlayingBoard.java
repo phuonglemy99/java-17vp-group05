@@ -11,9 +11,9 @@ import java.awt.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class PlayingBoard {
-    public static JFrame jfrm = new JFrame();
-    private BoardGUI boardEnemy = new BoardGUI(500, 1);
-    private BoardGUI boardPlayer = new BoardGUI(250, 2);
+    public  static JFrame jfrm = new JFrame();
+    private static BoardGUI boardEnemy = new BoardGUI(500, 1);
+    private static BoardGUI boardPlayer = new BoardGUI(250, 2);
     private static chatGUI chat = new chatGUI();
     private static DialogWait dialogWait = new DialogWait();
     private SocketPlayer socketPlayer;
@@ -32,6 +32,7 @@ public class PlayingBoard {
         socketPlayer = SocketPlayer.getInstance();
         socketPlayer.connect();
 
+        // Wait for socket is connected
         while(!socketPlayer.checkSocketNotNull());
 
         Border blackline = BorderFactory.createLineBorder(Color.black);
@@ -74,8 +75,38 @@ public class PlayingBoard {
         jfrm.setVisible(true);
 
         dialogWait.makeWait("Waiting for other player ready", jfrm);
-        dialogWait.close();
+        dialogWait.makeWait("Waiting for Enemy turn", jfrm);
     }
+
+    public static class ResultFireEmitterListener implements Emitter.Listener {
+        @Override
+        public void call(Object... objects) {
+        }
+    }
+
+    public static class EnemyFireEmitterListener implements Emitter.Listener {
+        @Override
+        public void call(Object... objects) {
+            int r = Integer.parseInt(objects[0].toString());
+            int c = Integer.parseInt(objects[1].toString());
+
+            Board.resultFire resultFindShip = boardPlayer.findShip(r, c);
+            int result;
+
+            if (resultFindShip == Board.resultFire.Hit) {
+                result = 1; // Hit a part of ship
+            } else if (resultFindShip == Board.resultFire.Miss) {
+                result = 0; // Miss
+            } else if (resultFindShip == Board.resultFire.Win) {
+                result = 3; // Win the game
+            } else {
+                result = 2; // Defeat a ship
+            }
+            SocketPlayer.getInstance().emit("result", result);
+        }
+    }
+
+
 
     public static class ChatEmitterListener implements Emitter.Listener {
         @Override
@@ -90,4 +121,6 @@ public class PlayingBoard {
             dialogWait.close();
         }
     }
+
+
 }

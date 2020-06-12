@@ -30,17 +30,9 @@ public class SocketPlayer {
             }
         }).on("chat message", new PlayingBoard.ChatEmitterListener()
         ).on("startGame", new PlayingBoard.StartGameEmitterListener()
-        ).on("enemyFire",new Emitter.Listener() {
-            @Override
-            public void call(Object... objects) {
-                // TODO: Check enemy fire right or wrong place, update UI
-                int x;
-                int y;
-
-                String result = "";
-                socket.emit("result", result);
-            }
-        }).on("endGame", new Emitter.Listener(){
+        ).on( "resultFire", new PlayingBoard.ResultFireEmitterListener()
+        ).on("enemyFire",new PlayingBoard.EnemyFireEmitterListener()
+        ).on("endGame", new Emitter.Listener(){
             @Override
             public void call(Object... objects) {
                 System.out.println("Ket thuc tran dau");

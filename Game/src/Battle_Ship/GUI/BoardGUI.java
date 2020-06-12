@@ -150,6 +150,10 @@ public class BoardGUI extends JPanel {
         }
     }
 
+    public Board.resultFire findShip(int row, int col){
+        return board.findShip(board.getTile(row, col));
+    }
+
     //-----------------------------------------------Prepare------------------------------------
     public void copyDetail(BoardGUI boardGUI){
         board.copyBoard(boardGUI.board);

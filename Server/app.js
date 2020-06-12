@@ -49,7 +49,9 @@ const play_match = io.of('/play-match');
 
 Room.socket = play_match;
 
-play_match.on('connect', function(socket){
+const dictionary_lookup_enemy = {};
+
+play_match.on('connect', async function(socket){
         // distribute user finding match in room
         if ( count_connection % 2 === 0 )
         {
@@ -70,8 +72,21 @@ play_match.on('connect', function(socket){
         play_match.to(socket.id).emit("info", socket.id);
         
         if ( count_connection % 2 === 0 ){
+            dictionary_lookup_enemy[socket.id] = waiting_player;
+            dictionary_lookup_enemy[waiting_player] = socket.id;
+
             play_match.to(socket.id).emit("startGame");
             play_match.to(waiting_player).emit("startGame");
+
+            let rand = 0;  // Math.floor(Math.random() * 2);
+            
+            await new Promise(resolve => setTimeout(resolve, 2000));    
+
+            if (rand === 0)
+                play_match.to(waiting_player).emit("startGame");
+            else 
+                play_match.to(socket.id).emit("startGame");
+
         }   
 
         // cancel socket client disconnect 
@@ -80,12 +95,12 @@ play_match.on('connect', function(socket){
             console.log('user disconnected. \ncount_connection = ' + count_connection);
         })
 
-        socket.on("fire", function() {
-            console.log("Player fire");
+        socket.on("fire", function(...msg) {
+            let [x, y] = msg;
+            play_match.to(dictionary_lookup_enemy[socket.id]).emit("enemyFire", x, y);
         })
 
         socket.on('chat message', function(msg){
-            console.log(socket.rooms);
             for (let key in socket.rooms) { 
                 if (! key.includes('play-match') )
                     play_match.to(socket.rooms[key]).emit('chat message', socket.id, msg);
