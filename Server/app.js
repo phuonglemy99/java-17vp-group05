@@ -72,20 +72,23 @@ play_match.on('connect', async function(socket){
         play_match.to(socket.id).emit("info", socket.id);
         
         if ( count_connection % 2 === 0 ){
+
             dictionary_lookup_enemy[socket.id] = waiting_player;
             dictionary_lookup_enemy[waiting_player] = socket.id;
 
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             play_match.to(socket.id).emit("startGame");
-            play_match.to(waiting_player).emit("startGame");
+            play_match.to(dictionary_lookup_enemy[socket.id]).emit("startGame");
 
-            let rand = 0;  // Math.floor(Math.random() * 2);
-            
-            await new Promise(resolve => setTimeout(resolve, 2000));    
+            let rand = Math.floor(Math.random() * 2);  
 
-            if (rand === 0)
-                play_match.to(waiting_player).emit("startGame");
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            if (0)
+                play_match.to(dictionary_lookup_enemy[socket.id]).emit("firstTurn");
             else 
-                play_match.to(socket.id).emit("startGame");
+                play_match.to(socket.id).emit("firstTurn");
 
         }   
 
@@ -98,6 +101,17 @@ play_match.on('connect', async function(socket){
         socket.on("fire", function(...msg) {
             let [x, y] = msg;
             play_match.to(dictionary_lookup_enemy[socket.id]).emit("enemyFire", x, y);
+        })
+
+        socket.on("result", function(msg) {
+            if (msg === "Win"){
+                // for (let key in socket.rooms) { 
+                //     if (! key.includes('play-match') )
+                //         play_match.to(socket.rooms[key]).emit("endGame");
+                // }
+                // return;
+            }
+            play_match.to(dictionary_lookup_enemy[socket.id]).emit("resultFire", msg);
         })
 
         socket.on('chat message', function(msg){

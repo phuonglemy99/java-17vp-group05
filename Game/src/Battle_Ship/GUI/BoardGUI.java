@@ -2,6 +2,7 @@ package Battle_Ship.GUI;
 
 import Battle_Ship.Board.Board;
 import Battle_Ship.Ship.Ship;
+import Battle_Ship.SocketPlayer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -118,15 +119,8 @@ public class BoardGUI extends JPanel {
                             if (tilePanes[click_row][click_col].getIsClicked() == 2){
                                 //JOptionPane.showMessageDialog(jfrm,  "This tile has been clicked!", "Error", JOptionPane.ERROR_MESSAGE);
                             } else {
-                                if (board.findShip(board.getTile(click_row, click_col)) == Board.resultFire.Hit) {
-                                    JOptionPane.showMessageDialog(jfrm, "Hit a tile of ship!");
-                                } else if (board.findShip(board.getTile(click_row, click_col)) == Board.resultFire.Miss) {
-                                    JOptionPane.showMessageDialog(jfrm, "Miss");
-                                } else if (board.findShip(board.getTile(click_row, click_col)) == Board.resultFire.Win) {
-                                    JOptionPane.showMessageDialog(jfrm, "You win!");
-                                } else {
-                                    JOptionPane.showMessageDialog(jfrm, "Defeat a ship!");
-                                }
+                                SocketPlayer.getInstance().emit("fire", new Object[] {String.valueOf(click_row), String.valueOf(click_col)});
+                                PlayingBoard.waitPlayerTurn.makeWait("Waiting for Enemy turn", jfrm);
                             }
                         }
                     }
@@ -377,15 +371,6 @@ public class BoardGUI extends JPanel {
 
     public void removeShip(){
         shipTiles.remove(shipTiles.size()-1);
-    }
-
-    public void enableOrDisableTiles(boolean enable) {
-        for (int r = 0; r < 9; r++){
-            for(int c = 0; c < 9; c++)
-            {
-                tilePanes[r][c].setEnabled(enable);
-            }
-        }
     }
 
     public static class TilePane extends JPanel{

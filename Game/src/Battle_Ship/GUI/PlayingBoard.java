@@ -15,7 +15,8 @@ public class PlayingBoard {
     private static BoardGUI boardEnemy = new BoardGUI(500, 1);
     private static BoardGUI boardPlayer = new BoardGUI(250, 2);
     private static chatGUI chat = new chatGUI();
-    private static DialogWait dialogWait = new DialogWait();
+    private static DialogWait waitPlayerDialog = new DialogWait();
+    public  static DialogWait waitPlayerTurn = new DialogWait();
     private SocketPlayer socketPlayer;
 
     public void setBoard(String typeBoard, BoardGUI board){
@@ -30,6 +31,7 @@ public class PlayingBoard {
 
     public PlayingBoard(BoardGUI m_boardPlayer){
         socketPlayer = SocketPlayer.getInstance();
+
         socketPlayer.connect();
 
         // Wait for socket is connected
@@ -74,13 +76,23 @@ public class PlayingBoard {
         c.add(rightPanel);
         jfrm.setVisible(true);
 
-        dialogWait.makeWait("Waiting for other player ready", jfrm);
-        dialogWait.makeWait("Waiting for Enemy turn", jfrm);
+        waitPlayerDialog.makeWait("Waiting for other player ready", jfrm);
+        waitPlayerTurn.makeWait("Waiting for Enemy turn", jfrm);
     }
 
     public static class ResultFireEmitterListener implements Emitter.Listener {
         @Override
         public void call(Object... objects) {
+            Board.resultFire result = Board.resultFire.valueOf(objects[0].toString());
+            if (result == Board.resultFire.Hit) {
+                JOptionPane.showMessageDialog(jfrm, "Hit a tile of ship!");
+            } else if (result == Board.resultFire.Miss) {
+                JOptionPane.showMessageDialog(jfrm, "Miss");
+            } else if (result == Board.resultFire.Win) {
+                JOptionPane.showMessageDialog(jfrm, "You win!");
+            } else {
+                JOptionPane.showMessageDialog(jfrm, "Defeat a ship!");
+            }
         }
     }
 
@@ -89,24 +101,11 @@ public class PlayingBoard {
         public void call(Object... objects) {
             int r = Integer.parseInt(objects[0].toString());
             int c = Integer.parseInt(objects[1].toString());
-
             Board.resultFire resultFindShip = boardPlayer.findShip(r, c);
-            int result;
-
-            if (resultFindShip == Board.resultFire.Hit) {
-                result = 1; // Hit a part of ship
-            } else if (resultFindShip == Board.resultFire.Miss) {
-                result = 0; // Miss
-            } else if (resultFindShip == Board.resultFire.Win) {
-                result = 3; // Win the game
-            } else {
-                result = 2; // Defeat a ship
-            }
-            SocketPlayer.getInstance().emit("result", result);
+            SocketPlayer.getInstance().emit("result", resultFindShip.toString());
+            PlayingBoard.waitPlayerTurn.close();
         }
     }
-
-
 
     public static class ChatEmitterListener implements Emitter.Listener {
         @Override
@@ -115,10 +114,17 @@ public class PlayingBoard {
         }
     }
 
+    public static class WaitTurnEmitterListener implements  Emitter.Listener {
+        @Override
+        public void call(Object... objects) {
+            PlayingBoard.waitPlayerTurn.close();
+        }
+    }
+
     public static class StartGameEmitterListener implements  Emitter.Listener {
         @Override
         public void call(Object... objects) {
-            dialogWait.close();
+            PlayingBoard.waitPlayerDialog.close();
         }
     }
 
