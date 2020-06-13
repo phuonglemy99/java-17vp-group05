@@ -1,5 +1,6 @@
 package Battle_Ship;
 
+import Battle_Ship.GUI.DashBoard;
 import Battle_Ship.GUI.PlayingBoard;
 import Battle_Ship.GUI.chatGUI;
 import io.socket.client.IO;
@@ -8,12 +9,15 @@ import io.socket.emitter.Emitter;
 
 import java.net.URISyntaxException;
 
+import static Battle_Ship.GUI.PlayingBoard.jfrm;
+
 public class SocketPlayer {
     private static String SOCKET_URL = "http://localhost:3000/play-match";
     private static SocketPlayer instance;
     private Socket socket;
     private String socketID;
 
+    // Lớp client socket
     private SocketPlayer() throws URISyntaxException {
         socket = IO.socket(SOCKET_URL);
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
@@ -37,6 +41,8 @@ public class SocketPlayer {
             @Override
             public void call(Object... objects) {
                 System.out.println("Ket thuc tran dau");
+                PlayingBoard.jfrm.setVisible(false);
+                (new DashBoard()).setVisible(true);
                 socket.disconnect();
                 socket = null;
             }

@@ -11,7 +11,8 @@ module.exports.login = function(req, res) {
         else res.json(
             {
                 status: 1,
-                userid: user._id
+                userid: user._id,
+                activate: user.activate
             }
         );
     })

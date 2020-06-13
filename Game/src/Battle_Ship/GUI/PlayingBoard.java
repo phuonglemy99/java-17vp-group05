@@ -44,8 +44,9 @@ public class PlayingBoard {
         jfrm.setResizable(false);
         //setBoard("Player", inforBoardP);
         setBoard("Player", m_boardPlayer);
-
+        boardPlayer.setStatus(2);
         boardEnemy.setStatus(1);
+        boardPlayer.showShip();
 
         FlowLayout layout = new FlowLayout(FlowLayout.LEFT, 40,10);
         c.setLayout(layout);
@@ -76,7 +77,10 @@ public class PlayingBoard {
         c.add(rightPanel);
         jfrm.setVisible(true);
 
+        // Waiting: StartGame event
         waitPlayerDialog.makeWait("Waiting for other player ready", jfrm);
+
+
         waitPlayerTurn.makeWait("Waiting for Enemy turn", jfrm);
     }
 

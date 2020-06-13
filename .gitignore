@@ -5,3 +5,9 @@ Game/out/
 Game/Game.iml
 
 Server/.vscode/
+
+Game/src/Battle_Ship/DashBoard.java
+
+Game/src/Battle_Ship/Login.java
+
+Game/src/Battle_Ship/SignUp.java

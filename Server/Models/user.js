@@ -8,7 +8,8 @@ let UserSchema = new Schema({
     password: String,
     win: Number,
     lose: Number,
-    money: Number    
+    money: Number,
+    activate: Number
 });
 
 let User = mongoose.model("User", UserSchema, "users");

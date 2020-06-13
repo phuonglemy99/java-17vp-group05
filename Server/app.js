@@ -104,14 +104,14 @@ play_match.on('connect', async function(socket){
         })
 
         socket.on("result", function(msg) {
-            if (msg === "Win"){
-                // for (let key in socket.rooms) { 
-                //     if (! key.includes('play-match') )
-                //         play_match.to(socket.rooms[key]).emit("endGame");
-                // }
-                // return;
-            }
             play_match.to(dictionary_lookup_enemy[socket.id]).emit("resultFire", msg);
+            if (msg === "Win"){
+                for (let key in socket.rooms) { 
+                    if (! key.includes('play-match') )
+                        play_match.to(socket.rooms[key]).emit("endGame");
+                }
+                return;
+            }
         })
 
         socket.on('chat message', function(msg){

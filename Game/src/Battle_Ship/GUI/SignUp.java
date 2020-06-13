@@ -1,11 +1,17 @@
 package Battle_Ship.GUI;
 
+import Network.ResponseResult.StatusResult;
+import retrofit2.Call;
+import retrofit2.Response;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+
+import static Network.ClientInstance.service;
 
 
 public class SignUp extends javax.swing.JFrame {
@@ -33,8 +39,8 @@ public class SignUp extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         labelIconBS = new javax.swing.JLabel();
-        txtEmail_SignUp = new javax.swing.JTextField();
-        labelEmail = new javax.swing.JLabel();
+        txtName_SignUp = new javax.swing.JTextField();
+        labelName_SignUp = new javax.swing.JLabel();
         labelPwd = new javax.swing.JLabel();
         txtConfrimPwd_SignUp = new javax.swing.JPasswordField();
         cbAgreeTermsPolicy = new javax.swing.JCheckBox();
@@ -66,22 +72,22 @@ public class SignUp extends javax.swing.JFrame {
         jPanel1.add(labelIconBS, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 160, -1));
         labelIconBS.getAccessibleContext().setAccessibleName("iconBattleShip");*/
 
-        txtEmail_SignUp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtEmail_SignUp.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtEmail_SignUp.addActionListener(new java.awt.event.ActionListener() {
+        txtName_SignUp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtName_SignUp.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtName_SignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmail_SignUpActionPerformed(evt);
             }
         });
-        jPanel1.add(txtEmail_SignUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 210, 30));
-        txtEmail_SignUp.getAccessibleContext().setAccessibleName("txtUserName");
+        jPanel1.add(txtName_SignUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 210, 30));
+        txtName_SignUp.getAccessibleContext().setAccessibleName("txtUserName");
 
-        labelEmail.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
-        labelEmail.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labelEmail.setText("Email:");
-        labelEmail.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.add(labelEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 110, 30));
-        labelEmail.getAccessibleContext().setAccessibleName("labelUsername");
+        labelName_SignUp.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
+        labelName_SignUp.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labelName_SignUp.setText("Name:");
+        labelName_SignUp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.add(labelName_SignUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 110, 30));
+        labelName_SignUp.getAccessibleContext().setAccessibleName("labelUsername");
 
         labelPwd.setFont(new java.awt.Font("Courier New", 1, 14)); // NOI18N
         labelPwd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -146,7 +152,11 @@ public class SignUp extends javax.swing.JFrame {
         btnSignUp.setText("Register");
         btnSignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSignUpActionPerformed(evt);
+                try {
+                    btnSignUpActionPerformed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         jPanel1.add(btnSignUp, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 250, -1));
@@ -157,7 +167,11 @@ public class SignUp extends javax.swing.JFrame {
         btnSignIn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSignIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSignInActionPerformed(evt);
+                try {
+                    btnSignInActionPerformed(evt);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         jPanel1.add(btnSignIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 500, 250, -1));
@@ -190,18 +204,29 @@ public class SignUp extends javax.swing.JFrame {
 
     private void jPasswordField_SignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField_SignUpActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jPasswordField_SignUpActionPerformed
 
     private void txtUserName_SignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserName_SignUpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUserName_SignUpActionPerformed
 
-    private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignUpActionPerformed
+    private void btnSignUpActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_btnSignUpActionPerformed
         // TODO add your handling code here:
+        String strName = txtName_SignUp.getText();
+        String strUserName = txtUserName_SignUp.getText();
+        String strPassword = jPasswordField_SignUp.getText();
 
+        Call<StatusResult> call_1 = service.createUser(strName, strUserName, strPassword);
+        Response<StatusResult> reponse_1 = call_1.execute();
+        StatusResult statusResult = reponse_1.body();
+
+        if (statusResult.status == 1){
+            JOptionPane.showMessageDialog(this,"Sign up successful!");
+        }
     }//GEN-LAST:event_btnSignUpActionPerformed
 
-    private void btnSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSignInActionPerformed
+    private void btnSignInActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_btnSignInActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
         Login login = new Login();
@@ -254,13 +279,13 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbAgreeTermsPolicy;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField_SignUp;
-    private javax.swing.JLabel labelEmail;
+    private javax.swing.JLabel labelUserName_SignUp;
     private javax.swing.JLabel labelIconBS;
     private javax.swing.JLabel labelPwd;
     private javax.swing.JLabel labelPwd_SignUp;
-    private javax.swing.JLabel labelUserName_SignUp;
+    private javax.swing.JLabel labelName_SignUp;
     private javax.swing.JPasswordField txtConfrimPwd_SignUp;
-    private javax.swing.JTextField txtEmail_SignUp;
+    private javax.swing.JTextField txtName_SignUp;
     private javax.swing.JTextField txtUserName_SignUp;
     // End of variables declaration//GEN-END:variables
 }

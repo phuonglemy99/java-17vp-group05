@@ -48,7 +48,8 @@ module.exports.create = function(req, res) {
         password,
         win: 0,
         lose: 0,
-        money: 0
+        money: 0,
+        activate: 1
     });
 
     // Save to MongoDB

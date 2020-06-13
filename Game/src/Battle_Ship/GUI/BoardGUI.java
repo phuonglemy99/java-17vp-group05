@@ -507,4 +507,16 @@ public class BoardGUI extends JPanel {
         }
     }
 
+    //------------------------------------Play game----------------------------------
+    public void showShip(){
+        for (int indexRow = 0; indexRow < 10; indexRow++){
+            for(int indexColumn = 0; indexColumn < 10; indexColumn++){
+                if(board.getTilesType(indexRow, indexColumn) != None)
+                {
+                    tilePanes[indexRow][indexColumn].setBackground(Color.CYAN);
+                }
+            }
+        }
+    }
+
 }

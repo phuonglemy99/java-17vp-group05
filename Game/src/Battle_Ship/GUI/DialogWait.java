@@ -7,9 +7,7 @@ public class DialogWait {
     private  JDialog dialog;
 
     public void makeWait(String msg, Frame frm) {
-
         dialog = new JDialog(frm, msg, Dialog.ModalityType.APPLICATION_MODAL);
-
         JProgressBar progressBar = new JProgressBar();
         progressBar.setIndeterminate(true);
         JPanel panel = new JPanel(new BorderLayout());
