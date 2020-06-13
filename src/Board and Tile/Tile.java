@@ -5,20 +5,20 @@ import Battle_Ship.Ship.Ship;
 import java.util.ArrayList;
 
 public class Tile {
-    private int coordinateX;
-    private int coordinateY;
+    private int row;
+    private int col;
     private boolean flagFire = false; // true : the tile hasn't been fired
     private Ship.type name = Ship.type.None;
 
 
-    public Tile(int coordinateX, int coordinateY){
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+    public Tile(int row, int col){
+        this.row = row;
+        this.col = col;
     }
 
-    public Tile(int coordinateX, int coordinateY, boolean flag, Ship.type typeOfShip){
-        this.coordinateX = coordinateX;
-        this.coordinateY = coordinateY;
+    public Tile(int row, int col, boolean flag, Ship.type typeOfShip){
+        this.row = row;
+        this.col = col;
         this.flagFire = flag;
         this.name = typeOfShip;
     }
@@ -31,16 +31,16 @@ public class Tile {
         this.name = name;
     }
 
-    public int getCoordinateX() {
-        return coordinateX;
+    public int getRow() {
+        return row;
     }
 
-    public void setCoordinateX(int coordinateX) {
-        this.coordinateX = coordinateX;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getCoordinateY() {
-        return coordinateY;
+    public int getCol() {
+        return col;
     }
 
     public boolean getFlagFire() {
@@ -51,13 +51,14 @@ public class Tile {
         this.flagFire = flag;
     }
 
-    public void setCoordinateY(int coordinateY) {
-        this.coordinateY = coordinateY;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     public boolean isTileEmpty(){
-        if (flagFire)
-            return false;
-        return true;
+        if (name == Ship.type.None) {
+            return true;
+        }
+        return false;
     }
 }
